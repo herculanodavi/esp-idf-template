@@ -1,0 +1,25 @@
+name: lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: 🧹 Format Check
+        uses: DoozyX/clang-format-lint-action@v0.15
+        with:
+          source: '.'
+          extensions: 'c,h,hpp,cpp'
+          clangFormatVersion: 15
+          style: file

@@ -1,0 +1,20 @@
+name: static_analysis
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: 🔍 Static Analysis
+        run: python static_analysis.py `find main -name "*.cpp" -or -name "*.c"`
