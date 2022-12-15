@@ -23,3 +23,6 @@ jobs:
           extensions: 'c,h,hpp,cpp'
           clangFormatVersion: 15
           style: file
+
+      - name: 🔍 Static Analysis
+        run: python static_analysis.py `find main -name "*.cpp" -or -name "*.c"`
