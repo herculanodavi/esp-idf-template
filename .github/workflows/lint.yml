@@ -47,6 +47,7 @@ jobs:
           clang_tidy_fixes: build/fixes.yml
           request_changes: true
           suggestions_per_comment: 10
+          repo_path_prefix: /__w
 
       - uses: actions/upload-artifact@v3
         with:
