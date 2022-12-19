@@ -38,8 +38,7 @@ jobs:
         run: . $IDF_PATH/export.sh && pip install --upgrade pyclang && idf_tools.py install xtensa-clang && ln -s /opt/esp/tools/xtensa-clang/14.0.0-38679f0333/xtensa-esp32-elf-clang/bin/clang-tidy /bin
 
       - name: 🔍 Static Analysis
-        run: . $IDF_PATH/export.sh && python scripts/fix_compile_commands.py `find main -name "*.cpp" -or -name "*.c"` && cat `
-
+        run: . $IDF_PATH/export.sh && python scripts/fix_compile_commands.py `find main -name "*.cpp" -or -name "*.c"`
       - name: Run clang-tidy-pr-comments action
         uses: platisd/clang-tidy-pr-comments@master
         with:
