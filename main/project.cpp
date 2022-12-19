@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <stdint.h>
 
 extern "C" void app_main(void)
 {
