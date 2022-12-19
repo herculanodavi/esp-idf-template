@@ -44,6 +44,6 @@ jobs:
         uses: platisd/clang-tidy-pr-comments@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          clang_tidy_fixes: fixes.yml
+          clang_tidy_fixes: build/fixes.yml
           request_changes: true
           suggestions_per_comment: 10
