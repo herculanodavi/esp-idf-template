@@ -6,7 +6,7 @@ import shutil
 
 
 IDF_PATH = os.environ.get('IDF_PATH')
-BUILD_PATH = "build/compile_commands.json"
+BUILD_PATH = "build/"
 
 
 def fix(line):
@@ -14,24 +14,31 @@ def fix(line):
 
 
 def fix_compile_commands(filename):
-    clang_commands_file = os.path.join(os.path.dirname(filename), 'clang-tidy-commands.json')
-    shutil.copyfile(filename, clang_commands_file)
+    commands_file = os.path.join(filename, 'compile_commands.json')
+    stored_file = os.path.join(filename, 'compile_commands_cached.json')
+    shutil.copyfile(commands_file, stored_file)
 
-    with open(clang_commands_file) as f:
+    with open(commands_file) as f:
         commands = json.load(f)
     for comm in commands:
         comm["command"] = " ".join([fix(line) for line in comm["command"].split(" ")])
         comm["command"] = comm["command"].replace("-mlongcalls", "")
         comm["command"] = comm["command"].replace("-fno-tree-switch-conversion", "")
         comm["command"] = comm["command"].replace("-fstrict-volatile-bitfields", "")
-    with open(clang_commands_file, "w") as f:
+    with open(commands_file, "w") as f:
         json.dump(commands, f)
 
-    return clang_commands_file    
+    return stored_file 
 
 
-def run_clang_tidy(commands_file, files):
-    return subprocess.run(["clang-tidy", "--config-file", ".clang-tidy", "-p", commands_file, "-fix"] + files).returncode
+def restore_compile_commands(directory, old_commands_file):
+    commands_file = os.path.join(directory, 'compile_commands.json')
+    os.remove(commands_file)
+    os.rename(old_commands_file, commands_file)
+
+
+def run_clang_tidy(commands_directory, files):
+    return subprocess.run(["clang-tidy", "--config-file", ".clang-tidy", "-p", commands_directory, "-export-fixes", os.path.join(BUILD_PATH, "fixes.yml")] + files).returncode
 
 
 def run_reconfigure():
@@ -43,9 +50,11 @@ def main():
         raise ValueError("IDF_PATH not found. Run '. ./export.sh'")
     
     run_reconfigure()
-    commands_file = fix_compile_commands(BUILD_PATH)
-    return run_clang_tidy(commands_file, sys.argv[1:])
+    old_commands_file = fix_compile_commands(BUILD_PATH)
+    result = run_clang_tidy(BUILD_PATH, sys.argv[1:])
+    restore_compile_commands(BUILD_PATH, old_commands_file)
+    return result
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

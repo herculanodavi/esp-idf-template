@@ -39,3 +39,11 @@ jobs:
 
       - name: 🔍 Static Analysis
         run: . $IDF_PATH/export.sh && python scripts/fix_compile_commands.py `find main -name "*.cpp" -or -name "*.c"`
+
+      - name: Run clang-tidy-pr-comments action
+        uses: platisd/clang-tidy-pr-comments@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          clang_tidy_fixes: fixes.yml
+          request_changes: true
+          suggestions_per_comment: 10
