@@ -35,7 +35,7 @@ jobs:
         env:
           IDF_TOOLCHAIN: clang
           IDF_TARGET: esp32
-        working-directory: test_app
+        working-directory: .
         run: |
           . ${IDF_PATH}/export.sh
           idf.py clang-check --include-paths $GITHUB_WORKSPACE --exclude-paths $PWD --run-clang-tidy-py run-clang-tidy
