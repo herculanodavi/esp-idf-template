@@ -38,9 +38,7 @@ jobs:
         working-directory: .
         run: |
           . ${IDF_PATH}/export.sh
-          echo $GITHUB_WORKSPACE
-          echo $PWD
-          idf.py clang-check --include-paths $GITHUB_WORKSPACE --exclude-paths $PWD --run-clang-tidy-py run-clang-tidy
+          idf.py clang-check --run-clang-tidy-py run-clang-tidy
           cp warnings.txt ../
       - name: Convert clang-tidy results into SARIF output
         run: |
