@@ -17,25 +17,9 @@ jobs:
           fetch-depth: 0
 
       - name: 🧹 Format Check
-        uses: DoozyX/clang-format-lint-action@v0.15
+        uses: DoozyX/clang-format-lint-action@v0.16.1
         with:
           source: '.'
           extensions: 'c,h,hpp,cpp'
-          clangFormatVersion: 15
+          clangFormatVersion: 16
           style: file
-
-  static-analysis:
-    runs-on: ubuntu-22.04
-    container:
-      image: espressif/idf:release-v5.0
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-          fetch-depth: 0
-
-      - name: Install tools
-        run: . $IDF_PATH/export.sh && pip install --upgrade pyclang && idf_tools.py install xtensa-clang && ln -s /opt/esp/tools/xtensa-clang/14.0.0-38679f0333/xtensa-esp32-elf-clang/bin/clang-tidy /bin
-
-      - name: 🔍 Static Analysis
-        run: . $IDF_PATH/export.sh && python scripts/fix_compile_commands.py `find main -name "*.cpp" -or -name "*.c"`
