@@ -1,0 +1,24 @@
+name: static analysis
+
+on:
+  workflow_call: {}
+
+jobs:
+  static-analysis:
+    name: Run clang tidy
+    runs-on: ubuntu-20.04
+    container: espressif/idf:v5.2
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: install clang-check
+        run: |
+          . ${IDF_PATH}/export.sh
+          idf_tools.py install esp-clang
+      - name: run clang-check
+        env:
+          IDF_TOOLCHAIN: clang
+        run: |
+          . ${IDF_PATH}/export.sh
+          idf.py clang-check
+          cp warnings.txt ../

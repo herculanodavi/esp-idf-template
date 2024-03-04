@@ -1,0 +1,20 @@
+name: Build target binary
+
+on:
+  workflow_call: { }
+
+jobs:
+  build:
+    name: Build in release mode
+    runs-on: ubuntu-20.04
+    container: espressif/idf:v5.2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - run: |
+          . ${IDF_PATH}/export.sh
+          find . -maxdepth 2
+          idf.py build
