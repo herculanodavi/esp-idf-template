@@ -1,6 +1,7 @@
-#include <cstdlib>
+#include "esp_log.h"
 
 extern "C" void app_main(void)
 {
-  int const a = 0;
+  int a = 1;
+  ESP_LOGI("Main", "Hello, world!");
 }

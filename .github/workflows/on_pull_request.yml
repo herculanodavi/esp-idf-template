@@ -1,0 +1,22 @@
+name: On pull request
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+concurrency:
+  group: ${{github.head_ref}}_opened
+  cancel-in-progress: true
+
+jobs:
+  lint-format:
+    name: Check formatting
+    uses: ./.github/workflows/workflow_format.yml
+
+  lint-static-analysis:
+    name: Run static analysis
+    uses: ./.github/workflows/workflow_static_analysis.yml
+
+  build-target:
+    name: Build target binary
+    uses: ./.github/workflows/workflow_build.yml

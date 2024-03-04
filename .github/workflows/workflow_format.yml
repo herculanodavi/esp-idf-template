@@ -1,14 +1,10 @@
 name: lint
 
 on:
-  pull_request:
-  push:
-    branches:
-      - main
-      - develop
+  workflow_call: {}
 
 jobs:
-  lint:
+  format:
     runs-on: ubuntu-latest
 
     steps:
