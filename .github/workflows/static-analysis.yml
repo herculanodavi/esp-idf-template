@@ -8,11 +8,12 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+
     name: Static analysis
-    runs-on: ubuntu-20.04
     container: espressif/idf:latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'true'
       - name: Install libtinfo (esp-clang dependency)
