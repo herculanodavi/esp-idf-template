@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+env:
+  IDF_VERSION: v5.2
+
 concurrency:
   group: ${{github.head_ref}}_opened
   cancel-in-progress: true
@@ -16,7 +19,11 @@ jobs:
   lint-static-analysis:
     name: Run static analysis
     uses: ./.github/workflows/workflow_static_analysis.yml
+    with:
+      idf_version: ${{env.IDF_VERSION}}
 
   build-target:
     name: Build target binary
     uses: ./.github/workflows/workflow_build.yml
+    with:
+      idf_version: ${{env.IDF_VERSION}}
